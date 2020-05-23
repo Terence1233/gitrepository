@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Ajax</title>
+    <script src="jquery-2.1.1.js"></script>
+    <script>
+        //在页面加载完成后
+        $(function(){
+            //给username绑定blur事件
+            $("#username").blur(function(){
+                //获取username文本输入框
+                var username = $(this).val();
+                //发送ajax请求
+                $.get("/login/findUserServlet", {username:username},function (data){
+                    //判断userExist键是否为true
+                    var s_username = $("#s_username");
+                    if(data.userExist){
+                        //用户名存在
+                        s_username.css("color", "red");
+                        s_username.html(data.msg);
+                    }else{
+                        s_username.css("color", "green");
+                        s_username.html(data.msg);
+                    }
+                }, "json");
+            });
+        });
+    </script>
+</head>
+<body>
+    <input type="text" id="username"name="username" placeholder="请输入用户名"/><span id="s_username"></span><br>
+
+    <input type="text" name="password" placeholder="请输入密码"/><br>
+    <input type="submit" value="注册"/>
+</body>
+</html>
